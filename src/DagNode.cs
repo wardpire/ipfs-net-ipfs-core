@@ -34,7 +34,7 @@ namespace Ipfs
         ///   The links to other nodes.
         /// </param>
         /// <param name="hashAlgorithm">
-        ///   The name of the hashing algorithm to use; defaults to 
+        ///   The name of the hashing algorithm to use; defaults to
         ///   <see cref="MultiHash.DefaultAlgorithmName"/>.
         /// </param>
         public DagNode(byte[] data, IEnumerable<IMerkleLink> links = null, string hashAlgorithm = MultiHash.DefaultAlgorithmName)
@@ -251,7 +251,7 @@ namespace Ipfs
                     stream.WriteSomeBytes(msg);
                 }
             }
-            
+
             if (DataBytes.Length > 0)
             {
                 stream.WriteTag(1, WireFormat.WireType.LengthDelimited);
@@ -333,5 +333,4 @@ namespace Ipfs
             }
         }
     }
-
 }

@@ -10,16 +10,11 @@ namespace Ipfs.Cryptography
 {
     internal partial class KeccakManaged : Keccak
     {
-        public KeccakManaged(int hashBitLength)
-            : base(hashBitLength)
+        public KeccakManaged(int hashBitLength) : base(hashBitLength)
         {
         }
 
-        protected
-#if !PORTABLE
-        override
-#endif
-        void HashCore(byte[] array, int ibStart, int cbSize)
+        protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
             base.HashCore(array, ibStart, cbSize);
             if (cbSize == 0)
@@ -50,11 +45,7 @@ namespace Ipfs.Cryptography
             }
         }
 
-        protected
-#if !PORTABLE
-        override
-#endif
-        byte[] HashFinal()
+        protected override byte[] HashFinal()
         {
             int sizeInBytes = SizeInBytes;
             byte[] outb = new byte[HashByteLength];
@@ -337,7 +328,6 @@ namespace Ipfs.Cryptography
             state[22] = Asi;
             state[23] = Aso;
             state[24] = Asu;
-
         }
     }
 }

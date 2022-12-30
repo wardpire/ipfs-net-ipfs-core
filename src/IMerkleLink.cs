@@ -1,13 +1,11 @@
 ﻿
 namespace Ipfs
 {
-
     /// <summary>
     ///   A link to another node in IPFS.
     /// </summary>
     public interface IMerkleLink
     {
-
         /// <summary>
         ///   A name associated with the linked node.
         /// </summary>
@@ -33,6 +31,5 @@ namespace Ipfs
         /// </summary>
         /// <value>Number of bytes.</value>
         long Size { get; }
-
     }
 }

@@ -20,7 +20,6 @@ namespace Ipfs.Cryptography
     System.Security.Cryptography.HashAlgorithm
 #endif
     {
-
         #region Implementation
         public const int KeccakB = 1600;
         public const int KeccakNumberOfRounds = 24;

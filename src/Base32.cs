@@ -14,7 +14,7 @@ namespace Ipfs
     ///   to encode a byte array and <see cref="FromBase32"/> to decode a Base-32 string.
     ///   </para>
     ///   <para>
-    ///   <see cref="Encode"/> and <see cref="ToBase32"/> produce the lower case form of 
+    ///   <see cref="Encode"/> and <see cref="ToBase32"/> produce the lower case form of
     ///   <see href="https://tools.ietf.org/html/rfc4648"/> with no padding.
     ///   <see cref="Decode"/> and <see cref="FromBase32"/> are case-insensitive and
     ///   allow optional padding.
@@ -26,7 +26,7 @@ namespace Ipfs
     public static class Base32
     {
         /// <summary>
-        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is 
+        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is
         ///   encoded with base-32 characters.
         /// </summary>s
         /// <param name="input">
@@ -41,7 +41,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is 
+        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is
         ///   encoded with base-32 digits.
         /// </summary>
         /// <param name="bytes">
@@ -56,7 +56,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 32 digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 32 digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="input">
@@ -70,11 +70,11 @@ namespace Ipfs
         /// </remarks>
         public static byte[] Decode(string input)
         {
-            return SimpleBase.Base32.Rfc4648.Decode(input);
+            return SimpleBase.Base32.Rfc4648.Decode(input).ToArray();
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 32 digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 32 digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">

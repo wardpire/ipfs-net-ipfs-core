@@ -13,8 +13,8 @@ namespace Ipfs
     /// </remarks>
     public class Peer : IEquatable<Peer>
     {
-        static MultiAddress[] noAddress = new MultiAddress[0];
-        const string unknown = "unknown/0.0";
+        private static readonly MultiAddress[] noAddress = Array.Empty<MultiAddress>();
+        private const string unknown = "unknown/0.0";
 
         /// <summary>
         ///   Universally unique identifier.
@@ -33,7 +33,7 @@ namespace Ipfs
         ///   The base 64 encoding of the node's public key.  The default is <b>null</b>
         /// </value>
         /// <remarks>
-        ///   The IPFS public key is the base-64 encoding of a protobuf encoding containing 
+        ///   The IPFS public key is the base-64 encoding of a protobuf encoding containing
         ///   a type and the DER encoding of the PKCS Subject Public Key Info.
         /// </remarks>
         /// <seealso href="https://tools.ietf.org/html/rfc5280#section-4.1.2.7"/>
@@ -117,9 +117,8 @@ namespace Ipfs
         public override bool Equals(object obj)
         {
             var that = obj as Peer;
-            return (that == null)
-                ? false
-               : this.Equals(that);
+            return (that != null)
+               && this.Equals(that);
         }
 
         /// <inheritdoc />
@@ -133,7 +132,7 @@ namespace Ipfs
         /// </summary>
         public static bool operator ==(Peer a, Peer b)
         {
-            if (object.ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, b)) return true;
             if (a is null) return false;
             if (b is null) return false;
 
@@ -171,7 +170,7 @@ namespace Ipfs
         /// <remarks>
         ///    Equivalent to <code>new Peer { Id = s }</code>
         /// </remarks>
-        static public implicit operator Peer(string s)
+        public static implicit operator Peer(string s)
         {
             return new Peer { Id = s };
         }

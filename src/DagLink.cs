@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Ipfs
 {
-
     /// <summary>
     ///   A link to another node in the IPFS Merkle DAG.
     /// </summary>
@@ -99,7 +98,7 @@ namespace Ipfs
         public void Write(CodedOutputStream stream)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             stream.WriteTag(1, WireFormat.WireType.LengthDelimited);
             Id.Write(stream);
@@ -114,7 +113,7 @@ namespace Ipfs
             stream.WriteInt64(Size);
         }
 
-        void Read(Stream stream)
+        private void Read(Stream stream)
         {
             using (var cis = new CodedInputStream(stream, true))
             {
@@ -122,7 +121,7 @@ namespace Ipfs
             }
         }
 
-        void Read(CodedInputStream stream)
+        private void Read(CodedInputStream stream)
         {
             while (!stream.IsAtEnd)
             {
@@ -132,12 +131,15 @@ namespace Ipfs
                     case 1:
                         Id = Cid.Read(stream);
                         break;
+
                     case 2:
                         Name = stream.ReadString();
                         break;
+
                     case 3:
                         Size = stream.ReadInt64();
                         break;
+
                     default:
                         throw new InvalidDataException("Unknown field number");
                 }
@@ -158,6 +160,5 @@ namespace Ipfs
                 return ms.ToArray();
             }
         }
-
     }
 }

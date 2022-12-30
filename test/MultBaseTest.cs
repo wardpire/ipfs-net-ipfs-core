@@ -46,14 +46,14 @@ namespace Ipfs
             ExceptionAssert.Throws<FormatException>(() => MultiBase.Decode("fXX"));
         }
 
-        class TestVector
+        private class TestVector
         {
             public string Algorithm { get; set; }
             public string Input { get; set; }
             public string Output { get; set; }
         }
 
-        TestVector[] TestVectors = new TestVector[]
+        private TestVector[] TestVectors = new TestVector[]
         {
             new TestVector {
                 Algorithm = "base16",
@@ -180,7 +180,6 @@ namespace Ipfs
                 Input ="\x00\x00yes mani !",
                 Output ="hyyy813murbssn5ujryoo"
             },
-
         };
 
         /// <summary>
@@ -214,10 +213,9 @@ namespace Ipfs
         {
             foreach (var alg in MultiBaseAlgorithm.All)
             {
-                var bad = alg.Code + "?";
+                var bad = "x" + alg.Code;
                 ExceptionAssert.Throws<FormatException>(() => MultiBase.Decode(bad));
             }
         }
-
     }
 }

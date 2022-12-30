@@ -20,7 +20,7 @@ namespace Ipfs
     ///    which avoids making assumptions about the address representation (e.g. length).
     ///   <para>
     ///   A multi address is represented as a series of protocol codes and values pairs.  For example,
-    ///   an IPFS file at a sepcific address over ipv4 and tcp is 
+    ///   an IPFS file at a sepcific address over ipv4 and tcp is
     ///   "/ip4/10.1.10.10/tcp/29087/ipfs/QmVcSqVEsvm5RR9mBLjwpb2XjFVn5bPdPL69mL8PH45pPC".
     ///   </para>
     ///   <para>
@@ -42,7 +42,7 @@ namespace Ipfs
         /// <summary>
         ///   The components of the <b>MultiAddress</b>.
         /// </summary>
-        public List<NetworkProtocol> Protocols { get; private set; }
+        public List<NetworkProtocol> Protocols { get; internal set; }
 
         /// <summary>
         ///   Creates a new instance of the <see cref="MultiAddress"/> class with the string.
@@ -82,11 +82,9 @@ namespace Ipfs
         ///   Creates a new instance of the <see cref="MultiAddress"/> class from the
         ///   specified <see cref="IPAddress"/>.
         /// </summary>
-        public MultiAddress(IPAddress ip)
-            : this()
+        public MultiAddress(IPAddress ip) : this()
         {
-            var type = ip.AddressFamily == AddressFamily.InterNetwork
-                ? "ip4" : "ip6";
+            var type = ip.AddressFamily == AddressFamily.InterNetwork ? "ip4" : "ip6";
             Read(new StringReader($"/{type}/{ip}"));
         }
 
@@ -97,8 +95,7 @@ namespace Ipfs
         public MultiAddress(IPEndPoint endpoint)
             : this()
         {
-            var type = endpoint.AddressFamily == AddressFamily.InterNetwork
-                ? "ip4" : "ip6";
+            var type = endpoint.AddressFamily == AddressFamily.InterNetwork ? "ip4" : "ip6";
             Read(new StringReader($"/{type}/{endpoint.Address}/tcp/{endpoint.Port}"));
         }
 
@@ -154,8 +151,7 @@ namespace Ipfs
         {
             get
             {
-                var protocol = Protocols
-                    .LastOrDefault(p => p.Name == "ipfs" || p.Name == "p2p");
+                var protocol = Protocols.LastOrDefault(p => p.Name == "ipfs" || p.Name == "p2p");
                 if (protocol == null)
                 {
                     throw new Exception($"'{this}' is missing the peer ID. Add the 'ipfs' or 'p2p' protocol.");
@@ -225,8 +221,7 @@ namespace Ipfs
                 return this;
             }
             var clone = Clone();
-            clone.Protocols
-                .RemoveAll(p => p.Name == "p2p" || p.Name == "ipfs");
+            clone.Protocols.RemoveAll(p => p.Name == "p2p" || p.Name == "ipfs");
             return clone;
         }
 
@@ -292,7 +287,7 @@ namespace Ipfs
         /// <remarks>
         ///   The binary representation is a sequence of <see cref="NetworkProtocol">network protocols</see>.
         /// </remarks>
-        void Read(Stream stream)
+        private void Read(Stream stream)
         {
             Read(new CodedInputStream(stream, true));
         }
@@ -306,7 +301,7 @@ namespace Ipfs
         /// <remarks>
         ///   The binary representation is a sequence of <see cref="NetworkProtocol">network protocols</see>.
         /// </remarks>
-        void Read(CodedInputStream stream)
+        private void Read(CodedInputStream stream)
         {
             Protocols.Clear();
             do
@@ -329,7 +324,7 @@ namespace Ipfs
         /// <remarks>
         ///   The string representation is a sequence of <see cref="NetworkProtocol">network protocols</see>.
         /// </remarks>
-        void Read(TextReader stream)
+        private void Read(TextReader stream)
         {
             if (stream.Read() != '/')
             {
@@ -376,9 +371,7 @@ namespace Ipfs
         public override bool Equals(object obj)
         {
             var that = obj as MultiAddress;
-            return (that == null)
-                ? false
-                : this.Equals(that);
+            return (that != null) && this.Equals(that);
         }
 
         /// <inheritdoc />
@@ -401,7 +394,7 @@ namespace Ipfs
         /// </summary>
         public static bool operator ==(MultiAddress a, MultiAddress b)
         {
-            if (object.ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, b)) return true;
             if (a is null) return false;
             if (b is null) return false;
 
@@ -413,7 +406,7 @@ namespace Ipfs
         /// </summary>
         public static bool operator !=(MultiAddress a, MultiAddress b)
         {
-            if (object.ReferenceEquals(a, b)) return false;
+            if (ReferenceEquals(a, b)) return false;
             if (a is null) return true;
             if (b is null) return true;
 
@@ -456,7 +449,7 @@ namespace Ipfs
         /// </summary>
         /// <param name="s">The string representation of a <see cref="MultiAddress"/>.</param>
         /// <returns>A new <see cref="MultiAddress"/>.</returns>
-        static public implicit operator MultiAddress(string s)
+        public static implicit operator MultiAddress(string s)
         {
             return new MultiAddress(s);
         }
@@ -511,14 +504,16 @@ namespace Ipfs
         /// <remarks>
         ///   The JSON is just a single string value.
         /// </remarks>
-        class Json : JsonConverter
+        private class Json : JsonConverter
         {
             public override bool CanConvert(Type objectType)
             {
                 return true;
             }
+
             public override bool CanRead => true;
             public override bool CanWrite => true;
+
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
                 var ma = value as MultiAddress;
@@ -531,8 +526,5 @@ namespace Ipfs
                 return s == null ? null : new MultiAddress(s);
             }
         }
-
-
     }
-
 }

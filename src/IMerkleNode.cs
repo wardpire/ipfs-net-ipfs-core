@@ -13,7 +13,7 @@ namespace Ipfs
     /// </summary>
     /// <remarks>
     ///   A <b>MerkleNode</b> has a sequence of navigable <see cref="Links"/>
-    ///   and some data (<see cref="IDataBlock.DataBytes"/> 
+    ///   and some data (<see cref="IDataBlock.DataBytes"/>
     ///   or <see cref="IDataBlock.DataStream"/>).
     /// </remarks>
     /// <typeparam name="Link">
@@ -24,7 +24,6 @@ namespace Ipfs
     public interface IMerkleNode<out Link> : IDataBlock
         where Link : IMerkleLink
     {
-
         /// <summary>
         ///   Links to other nodes.
         /// </summary>
@@ -50,7 +49,5 @@ namespace Ipfs
         ///   A new <see cref="IMerkleLink"/> to the node.
         /// </returns>
         Link ToLink(string name = "");
-
     }
-
 }

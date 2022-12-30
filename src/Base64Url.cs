@@ -20,7 +20,7 @@ namespace Ipfs
     public static class Base64Url
     {
         /// <summary>
-        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is 
+        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is
         ///   encoded with base-64 URL characters.
         /// </summary>s
         /// <param name="bytes">
@@ -41,7 +41,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is 
+        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is
         ///   encoded with base-64 URL digits.
         /// </summary>
         /// <param name="bytes">
@@ -56,7 +56,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 64 URL digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 64 URL digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">
@@ -82,7 +82,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 64 url digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 64 url digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">

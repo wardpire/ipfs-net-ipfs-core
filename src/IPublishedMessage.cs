@@ -36,6 +36,5 @@ namespace Ipfs
         ///   A sender unique id for the message.
         /// </value>
         byte[] SequenceNumber { get; }
-
     }
 }

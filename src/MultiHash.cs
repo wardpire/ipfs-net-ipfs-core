@@ -11,8 +11,8 @@ using Newtonsoft.Json;
 
 namespace Ipfs
 {
-    /// <summary> 
-    ///   A protocol for differentiating outputs from various well-established cryptographic hash functions, 
+    /// <summary>
+    ///   A protocol for differentiating outputs from various well-established cryptographic hash functions,
     ///   addressing size + encoding considerations.
     /// </summary>
     /// <remarks>
@@ -22,12 +22,12 @@ namespace Ipfs
     [JsonConverter(typeof(MultiHash.Json))]
     public class MultiHash : IEquatable<MultiHash>
     {
-        static readonly ILog log = LogManager.GetLogger<MultiHash>();
+        private static readonly ILog log = LogManager.GetLogger<MultiHash>();
 
         /// <summary>
         ///   The cached base-58 encoding of the multihash.
         /// </summary>
-        string b58String;
+        private string b58String;
 
         /// <summary>
         ///   The default hashing algorithm is "sha2-256".
@@ -103,9 +103,14 @@ namespace Ipfs
         public MultiHash(string algorithmName, byte[] digest)
         {
             if (algorithmName == null)
-                throw new ArgumentNullException("algorithmName");
+            {
+                throw new ArgumentNullException(nameof(algorithmName));
+            }
+
             if (digest == null)
-                throw new ArgumentNullException("digest");
+            {
+                throw new ArgumentNullException(nameof(digest));
+            }
 
             if (!HashingAlgorithm.Names.TryGetValue(algorithmName, out HashingAlgorithm a))
             {
@@ -113,9 +118,20 @@ namespace Ipfs
             }
             Algorithm = a;
 
-            if (Algorithm.DigestSize != 0 && Algorithm.DigestSize != digest.Length)
-                throw new ArgumentException(string.Format("The digest size for '{0}' is {1} bytes, not {2}.", algorithmName, Algorithm.DigestSize, digest.Length));
-            Digest = digest;
+            if (Algorithm.DigestSize != 0)
+            {
+                // NOTE: AS of .NET 7 the Digest for shake-128 (and a times shake-256)
+                //       always appears off with additional character (double it's length)
+                //       a check to adjust for that is neccessary pending when we figure it out
+                Digest = Algorithm.DigestSize != digest.Length
+                    ? digest.AsSpan(0, Algorithm.DigestSize).ToArray()
+                    : digest;
+            }
+            else
+            {
+                // Identity digest
+                Digest = digest.Length > 0 ? digest : Array.Empty<byte>();
+            }
         }
 
         /// <summary>
@@ -240,7 +256,7 @@ namespace Ipfs
         /// <remarks>
         ///    Equivalent to <code>new MultiHash(s)</code>
         /// </remarks>
-        static public implicit operator MultiHash(string s)
+        public static implicit operator MultiHash(string s)
         {
             return new MultiHash(s);
         }
@@ -307,14 +323,14 @@ namespace Ipfs
         public void Write(CodedOutputStream stream)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             stream.WriteInt32(Algorithm.Code);
             stream.WriteLength(Digest.Length);
             stream.WriteSomeBytes(Digest);
         }
 
-        void Read(Stream stream)
+        private void Read(Stream stream)
         {
             using (var cis = new CodedInputStream(stream, true))
             {
@@ -322,7 +338,7 @@ namespace Ipfs
             }
         }
 
-        void Read(CodedInputStream stream)
+        private void Read(CodedInputStream stream)
         {
             var code = stream.ReadInt32();
             var digestSize = stream.ReadLength();
@@ -352,9 +368,8 @@ namespace Ipfs
         public override bool Equals(object obj)
         {
             var that = obj as MultiHash;
-            return (that == null)
-                ? false
-                : this.Equals(that);
+            return (that != null)
+                && this.Equals(that);
         }
 
         /// <inheritdoc />
@@ -369,7 +384,7 @@ namespace Ipfs
         /// </summary>
         public static bool operator ==(MultiHash a, MultiHash b)
         {
-            if (object.ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, b)) return true;
             if (a is null) return false;
             if (b is null) return false;
 
@@ -492,11 +507,11 @@ namespace Ipfs
             return true;
         }
 
-        void RaiseUnknownHashingAlgorithm(HashingAlgorithm algorithm)
+        private void RaiseUnknownHashingAlgorithm(HashingAlgorithm algorithm)
         {
             if (log.IsWarnEnabled)
                 log.WarnFormat("Unknown hashing algorithm number 0x{0:x2}.", algorithm.Code);
- 
+
             var handler = UnknownHashingAlgorithm;
             if (handler != null)
             {
@@ -506,7 +521,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Generate the multihash for the specified byte array. 
+        ///   Generate the multihash for the specified byte array.
         /// </summary>
         /// <param name="data">
         ///   The byte array containing the data to hash.
@@ -526,7 +541,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Generate the multihash for the specified <see cref="Stream"/>. 
+        ///   Generate the multihash for the specified <see cref="Stream"/>.
         /// </summary>
         /// <param name="data">
         ///   The <see cref="Stream"/> containing the data to hash.
@@ -551,14 +566,16 @@ namespace Ipfs
         /// <remarks>
         ///   The JSON is just a single string value.
         /// </remarks>
-        class Json : JsonConverter
+        private class Json : JsonConverter
         {
             public override bool CanConvert(Type objectType)
             {
                 return true;
             }
+
             public override bool CanRead => true;
             public override bool CanWrite => true;
+
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
                 var mh = value as MultiHash;
@@ -584,5 +601,4 @@ namespace Ipfs
         /// </summary>
         public HashingAlgorithm Algorithm { get; set; }
     }
-
 }

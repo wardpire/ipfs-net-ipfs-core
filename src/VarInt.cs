@@ -117,7 +117,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Reads a variable integer from the stream. 
+        ///   Reads a variable integer from the stream.
         /// </summary>
         /// <param name="stream">
         ///   A varint encoded <see cref="Stream"/>.
@@ -126,7 +126,7 @@ namespace Ipfs
         ///   When the no bytes exist in the <paramref name="stream"/>.
         /// </exception>
         /// <exception cref="InvalidDataException">
-        ///   When the varint value is greater than <see cref="Int32.MaxValue"/>.
+        ///   When the varint value is greater than <see cref="int.MaxValue"/>.
         /// </exception>
         /// <returns>The integer value.</returns>
         public static int ReadVarint32(this Stream stream)
@@ -135,7 +135,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Reads a variable integer from the stream. 
+        ///   Reads a variable integer from the stream.
         /// </summary>
         /// <param name="stream">
         ///   A varint encoded <see cref="Stream"/>.
@@ -144,7 +144,7 @@ namespace Ipfs
         ///   When the no bytes exist in the <paramref name="stream"/>.
         /// </exception>
         /// <exception cref="InvalidDataException">
-        ///   When the varint value is greater than <see cref="Int64.MaxValue"/>.
+        ///   When the varint value is greater than <see cref="long.MaxValue"/>.
         /// </exception>
         /// <returns>The integer value.</returns>
         public static long ReadVarint64(this Stream stream)
@@ -171,7 +171,7 @@ namespace Ipfs
         /// <exception cref="NotSupportedException">
         ///   When <paramref name="value"/> is negative.
         /// </exception>
-        public static async Task WriteVarintAsync(this Stream stream, long value, CancellationToken cancel = default(CancellationToken))
+        public static async Task WriteVarintAsync(this Stream stream, long value, CancellationToken cancel = default)
         {
             if (value < 0)
                 throw new NotSupportedException("Negative values are not allowed for a Varint");
@@ -190,7 +190,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Reads a variable integer from the stream. 
+        ///   Reads a variable integer from the stream.
         /// </summary>
         /// <param name="stream">
         ///   A varint encoded <see cref="Stream"/>.
@@ -206,9 +206,9 @@ namespace Ipfs
         ///   When the no bytes exist in the <paramref name="stream"/>.
         /// </exception>
         /// <exception cref="InvalidDataException">
-        ///   When the varint value is greater than <see cref="Int32.MaxValue"/>.
+        ///   When the varint value is greater than <see cref="int.MaxValue"/>.
         /// </exception>
-        public static async Task<int> ReadVarint32Async(this Stream stream, CancellationToken cancel = default(CancellationToken))
+        public static async Task<int> ReadVarint32Async(this Stream stream, CancellationToken cancel = default)
         {
             var value = await stream.ReadVarint64Async(cancel).ConfigureAwait(false);
             if (value > int.MaxValue)
@@ -217,7 +217,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Reads a variable integer from the stream. 
+        ///   Reads a variable integer from the stream.
         /// </summary>
         /// <param name="stream">
         ///   A varint encoded <see cref="Stream"/>.
@@ -226,7 +226,7 @@ namespace Ipfs
         ///   Is used to stop the task.  When cancelled, the <see cref="TaskCanceledException"/> is raised.
         /// </param>
         /// <exception cref="InvalidDataException">
-        ///   When the varint value is greater than <see cref="Int64.MaxValue"/>.
+        ///   When the varint value is greater than <see cref="long.MaxValue"/>.
         /// </exception>
         /// <exception cref="EndOfStreamException">
         ///   When the no bytes exist in the <paramref name="stream"/>.
@@ -235,7 +235,7 @@ namespace Ipfs
         ///   A task that represents the asynchronous operation. The task's result
         ///   is the integer value in the <paramref name="stream"/>.
         /// </returns>
-        public static async Task<long> ReadVarint64Async(this Stream stream, CancellationToken cancel = default(CancellationToken))
+        public static async Task<long> ReadVarint64Async(this Stream stream, CancellationToken cancel = default)
         {
             long value = 0;
             int shift = 0;
@@ -259,6 +259,5 @@ namespace Ipfs
                 shift += 7;
             }
         }
-
     }
 }

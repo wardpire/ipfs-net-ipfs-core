@@ -13,8 +13,8 @@ namespace Ipfs
     ///   Wraps other formats with a tiny bit of self-description.
     /// </summary>
     /// <remarks>
-    ///   <b>MultiCodec</b> is a self-describing multiformat, it wraps other formats with a 
-    ///   tiny bit of self-description. A multicodec identifier is both a varint and the code 
+    ///   <b>MultiCodec</b> is a self-describing multiformat, it wraps other formats with a
+    ///   tiny bit of self-description. A multicodec identifier is both a varint and the code
     ///   identifying the following data.
     ///   <para>
     ///   Adds the following extension methods to <see cref="Stream"/>
@@ -28,9 +28,8 @@ namespace Ipfs
     /// <seealso cref="Registry.Codec"/>
     public static class MultiCodec
     {
-
         /// <summary>
-        ///   Reads a <see cref="Codec"/> from the <see cref="Stream"/>. 
+        ///   Reads a <see cref="Codec"/> from the <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">
         ///   A multicodec encoded <see cref="Stream"/>.
@@ -45,15 +44,12 @@ namespace Ipfs
         {
             var code = stream.ReadVarint32();
             Codec.Codes.TryGetValue(code, out Codec codec);
-            if (codec == null)
-            {
-                codec = Codec.Register($"codec-{code}", code);
-            }
+            codec ??= Codec.Register($"codec-{code}", code);
             return codec;
         }
 
         /// <summary>
-        ///   Reads a <see cref="Codec"/> from the <see cref="CodedInputStream"/>. 
+        ///   Reads a <see cref="Codec"/> from the <see cref="CodedInputStream"/>.
         /// </summary>
         /// <param name="stream">
         ///   A multicodec encoded <see cref="CodedInputStream"/>.
@@ -68,15 +64,12 @@ namespace Ipfs
         {
             var code = stream.ReadInt32();
             Codec.Codes.TryGetValue(code, out Codec codec);
-            if (codec == null)
-            {
-                codec = Codec.Register($"codec-{code}", code);
-            }
+            codec ??= Codec.Register($"codec-{code}", code);
             return codec;
         }
 
         /// <summary>
-        ///   Writes a <see cref="Codec"/> to the <see cref="Stream"/>. 
+        ///   Writes a <see cref="Codec"/> to the <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">
         ///   A multicodec encoded <see cref="Stream"/>.
@@ -100,7 +93,5 @@ namespace Ipfs
             }
             stream.WriteVarint(codec.Code);
         }
-
-
     }
 }

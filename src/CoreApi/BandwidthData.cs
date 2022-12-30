@@ -28,6 +28,5 @@ namespace Ipfs.CoreApi
         ///   TODO
         /// </summary>
         public double RateOut;
-
     }
 }
