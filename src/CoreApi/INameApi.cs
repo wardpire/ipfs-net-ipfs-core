@@ -45,7 +45,7 @@ namespace Ipfs.CoreApi
             bool resolve = true,
             string key = "self",
             TimeSpan? lifetime = null,
-            CancellationToken cancel = default(CancellationToken)
+            CancellationToken cancel = default
             );
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Ipfs.CoreApi
             Cid id,
             string key = "self",
             TimeSpan? lifetime = null,
-            CancellationToken cancel = default(CancellationToken)
+            CancellationToken cancel = default
             );
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Ipfs.CoreApi
             string name,
             bool recursive = false,
             bool nocache = false,
-            CancellationToken cancel = default(CancellationToken)
+            CancellationToken cancel = default
             );
     }
 }

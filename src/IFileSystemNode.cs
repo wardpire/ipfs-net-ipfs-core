@@ -17,6 +17,5 @@ namespace Ipfs
         ///   it is some type of a file.
         /// </value>
         bool IsDirectory { get; }
-
     }
 }

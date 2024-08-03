@@ -16,7 +16,6 @@ namespace Ipfs.CoreApi
     /// </remarks>
     public interface IDnsApi
     {
-
         /// <summary>
         ///   Resolve a domain name to an IPFS path.
         /// </summary>
@@ -31,7 +30,7 @@ namespace Ipfs.CoreApi
         /// </param>
         /// <returns>
         ///   A task that represents the asynchronous operation. The task's value is
-        ///   the resolved IPFS path as a <see cref="string"/>, such as 
+        ///   the resolved IPFS path as a <see cref="string"/>, such as
         ///   <c>/ipfs/QmYNQJoKGNHTpPxCBPh9KkDpaExgd2duMa3aF6ytMpHdao</c>.
         /// </returns>
         /// <remarks>
@@ -49,7 +48,7 @@ namespace Ipfs.CoreApi
         Task<string> ResolveAsync(
             string name,
             bool recursive = false,
-            CancellationToken cancel = default(CancellationToken)
+            CancellationToken cancel = default
             );
     }
 }

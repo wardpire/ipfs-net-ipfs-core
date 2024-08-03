@@ -10,7 +10,7 @@ namespace Ipfs.CoreApi
     ///   Manages the Distributed Hash Table.
     /// </summary>
     /// <remarks>
-    ///   The DHT is a place to store, not the value, but pointers to peers who have 
+    ///   The DHT is a place to store, not the value, but pointers to peers who have
     ///   the actual value.
     ///   <para>
     ///   See the ongoing DHT specification at <see href="https://github.com/libp2p/specs/pull/108"/>

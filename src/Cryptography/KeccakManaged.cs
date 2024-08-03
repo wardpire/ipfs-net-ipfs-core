@@ -7,8 +7,7 @@ namespace Ipfs.Cryptography
 {
     internal partial class KeccakManaged : Keccak
     {
-        public KeccakManaged(int hashBitLength)
-            : base(hashBitLength)
+        public KeccakManaged(int hashBitLength) : base(hashBitLength)
         {
         }
 
@@ -326,7 +325,6 @@ namespace Ipfs.Cryptography
             state[22] = Asi;
             state[23] = Aso;
             state[24] = Asu;
-
         }
     }
 }

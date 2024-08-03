@@ -5,32 +5,31 @@ using System.Text;
 
 namespace Ipfs.Cryptography
 {
-    class DoubleSha256 : HashAlgorithm
+    internal class DoubleSha256 : HashAlgorithm
     {
-        HashAlgorithm digest = SHA256.Create();
-        byte[] round1;
+        private readonly HashAlgorithm digest = SHA256.Create();
+        private byte[] roundComputedHash;
 
         public override void Initialize()
         {
             digest.Initialize();
-            round1 = null;
+            roundComputedHash = null;
         }
 
         public override int HashSize => digest.HashSize;
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            if (round1 != null)
+            if (roundComputedHash != null)
                 throw new NotSupportedException("Already called.");
 
-            round1 = digest.ComputeHash(array, ibStart, cbSize);
+            roundComputedHash = digest.ComputeHash(array, ibStart, cbSize);
         }
 
         protected override byte[] HashFinal()
         {
             digest.Initialize();
-            return digest.ComputeHash(round1);
+            return digest.ComputeHash(roundComputedHash);
         }
-
     }
 }

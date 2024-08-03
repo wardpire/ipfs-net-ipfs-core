@@ -12,7 +12,7 @@ namespace Ipfs.Cryptography
     /// </remarks>
     internal class BouncyDigest : System.Security.Cryptography.HashAlgorithm
     {
-        Org.BouncyCastle.Crypto.IDigest digest;
+        private readonly Org.BouncyCastle.Crypto.IDigest digest;
 
         /// <summary>
         ///   Wrap the bouncy castle digest.
@@ -43,4 +43,3 @@ namespace Ipfs.Cryptography
         }
     }
 }
- 

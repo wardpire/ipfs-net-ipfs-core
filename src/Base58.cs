@@ -23,7 +23,7 @@ namespace Ipfs
     public static class Base58
     {
         /// <summary>
-        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is 
+        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is
         ///   encoded with base-58 characters.
         /// </summary>s
         /// <param name="bytes">
@@ -38,7 +38,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is 
+        ///   Converts an array of 8-bit unsigned integers to its equivalent string representation that is
         ///   encoded with base-58 digits.
         /// </summary>
         /// <param name="bytes">
@@ -53,7 +53,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 58 digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 58 digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">
@@ -68,7 +68,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 58 digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as base 58 digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">

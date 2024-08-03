@@ -15,7 +15,6 @@ namespace Ipfs.Cryptography
 {
     internal abstract class Keccak : System.Security.Cryptography.HashAlgorithm
     {
-
         #region Implementation
         public const int KeccakB = 1600;
         public const int KeccakNumberOfRounds = 24;

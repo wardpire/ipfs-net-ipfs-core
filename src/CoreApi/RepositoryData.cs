@@ -48,6 +48,5 @@ namespace Ipfs.CoreApi
         ///  Max bytes allowed in the <see cref="IBlockRepositoryApi">repository</see>.
         /// </value>
         public ulong StorageMax;
-
     }
 }

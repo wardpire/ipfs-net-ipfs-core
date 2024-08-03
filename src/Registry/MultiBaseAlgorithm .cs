@@ -19,8 +19,8 @@ namespace Ipfs.Registry
     /// </remarks>
     public class MultiBaseAlgorithm
     {
-        internal static Dictionary<string, MultiBaseAlgorithm> Names = new Dictionary<string, MultiBaseAlgorithm>();
-        internal static Dictionary<char, MultiBaseAlgorithm> Codes = new Dictionary<char, MultiBaseAlgorithm>();
+        internal static Dictionary<string, MultiBaseAlgorithm> Names = new();
+        internal static Dictionary<char, MultiBaseAlgorithm> Codes = new();
 
         /// <summary>
         ///   Register the standard multi-base algorithms for IPFS.
@@ -44,8 +44,8 @@ namespace Ipfs.Registry
                 bytes => bytes.ToBase64Url(),
                 s => s.FromBase64Url());
             Register("base16", 'f',
-                bytes => SimpleBase.Base16.EncodeLower(bytes),
-                s => SimpleBase.Base16.Decode(s));
+                bytes => SimpleBase.Base16.LowerCase.Encode(bytes),
+                s => SimpleBase.Base16.Decode(s).ToArray());
             Register("base32", 'b',
                 bytes => SimpleBase.Base32.Rfc4648.Encode(bytes, false).ToLowerInvariant(),
                 s => SimpleBase.Base32.Rfc4648.Decode(s));
@@ -59,8 +59,8 @@ namespace Ipfs.Registry
                 bytes => SimpleBase.Base32.ExtendedHex.Encode(bytes, true).ToLowerInvariant(),
                 s => SimpleBase.Base32.ExtendedHex.Decode(s));
             Register("BASE16", 'F',
-                bytes => SimpleBase.Base16.EncodeUpper(bytes),
-                s => SimpleBase.Base16.Decode(s));
+                bytes => SimpleBase.Base16.UpperCase.Encode(bytes),
+                s => SimpleBase.Base16.Decode(s).ToArray());
             Register("BASE32", 'B',
                 bytes => SimpleBase.Base32.Rfc4648.Encode(bytes, false),
                 s => SimpleBase.Base32.Rfc4648.Decode(s));
@@ -76,6 +76,7 @@ namespace Ipfs.Registry
             Register("base32z", 'h',
                 bytes => Base32z.Codec.Encode(bytes, false),
                 s => Base32z.Codec.Decode(s));
+
             // Not supported
 #if false
             Register("base1", '1');
@@ -114,7 +115,7 @@ namespace Ipfs.Registry
         /// <summary>
         ///   Use <see cref="Register"/> to create a new instance of a <see cref="MultiBaseAlgorithm"/>.
         /// </summary>
-        MultiBaseAlgorithm()
+        private MultiBaseAlgorithm()
         {
         }
 
@@ -157,13 +158,8 @@ namespace Ipfs.Registry
                 throw new ArgumentException(string.Format("The IPFS multi-base algorithm name '{0}' is already defined.", name));
             if (Codes.ContainsKey(code))
                 throw new ArgumentException(string.Format("The IPFS multi-base algorithm code '{0}' is already defined.", code));
-            if (encode == null) {
-                encode = (bytes) => { throw new NotImplementedException(string.Format("The IPFS encode multi-base algorithm '{0}' is not implemented.", name)); };
-            }
-            if (decode == null)
-            {
-                decode = (s) => { throw new NotImplementedException(string.Format("The IPFS decode multi-base algorithm '{0}' is not implemented.", name)); };
-            }
+            encode ??= (_) => throw new NotImplementedException(string.Format("The IPFS encode multi-base algorithm '{0}' is not implemented.", name));
+            decode ??= (_) => throw new NotImplementedException(string.Format("The IPFS decode multi-base algorithm '{0}' is not implemented.", name));
 
             var a = new MultiBaseAlgorithm
             {
@@ -197,6 +193,5 @@ namespace Ipfs.Registry
         {
             get { return Names.Values; }
         }
-
     }
 }

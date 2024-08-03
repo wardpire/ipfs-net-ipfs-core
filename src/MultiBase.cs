@@ -11,8 +11,8 @@ namespace Ipfs
     ///   Self identifying base encodings.
     /// </summary>
     /// <remarks>
-    ///   <b>MultiBase</b> is a protocol for distinguishing base encodings 
-    ///   and other simple string encodings.  
+    ///   <b>MultiBase</b> is a protocol for distinguishing base encodings
+    ///   and other simple string encodings.
     ///   See the <see cref="MultiBaseAlgorithm">registry</see> for supported algorithms.
     /// </remarks>
     /// <seealso href="https://github.com/multiformats/multibase"/>
@@ -27,14 +27,14 @@ namespace Ipfs
         ///   Gets the <see cref="MultiBaseAlgorithm"/> with the specified IPFS multi-hash name.
         /// </summary>
         /// <param name="name">
-        ///   The name of an algorithm, see 
+        ///   The name of an algorithm, see
         ///   <see href="https://github.com/multiformats/multibase/blob/master/multibase.csv"/> for
         ///   for IPFS defined names.
         /// </param>
         /// <exception cref="KeyNotFoundException">
         ///   When <paramref name="name"/> is not registered.
         /// </exception>
-        static MultiBaseAlgorithm GetAlgorithm(string name)
+        private static MultiBaseAlgorithm GetAlgorithm(string name)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Ipfs
         {
             if (bytes == null)
             {
-                throw new ArgumentNullException("bytes");
+                throw new ArgumentNullException(nameof(bytes));
             }
 
             var alg = GetAlgorithm(algorithmName);
@@ -74,7 +74,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">
@@ -90,7 +90,7 @@ namespace Ipfs
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             }
 
             MultiBaseAlgorithm.Codes.TryGetValue(s[0], out MultiBaseAlgorithm alg);
@@ -99,15 +99,15 @@ namespace Ipfs
                 throw new FormatException($"MultiBase '{s}' is invalid. The code is not registered.");
             }
 
+            //
             try
             {
-                return alg.Decode(s.Substring(1));
+                return alg.Decode(s[1..]);
             }
             catch (Exception e)
             {
                 throw new FormatException($"MultiBase '{s}' is invalid; decode failed.", e);
             }
         }
-
     }
 }

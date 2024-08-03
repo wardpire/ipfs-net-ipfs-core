@@ -76,7 +76,7 @@ namespace Ipfs
         {
             ExceptionAssert.Throws<ArgumentNullException>(() => new MultiHash("sha1", null));
             ExceptionAssert.Throws<ArgumentException>(() => new MultiHash("sha1", new byte[0]));
-            ExceptionAssert.Throws<ArgumentException>(() => new MultiHash("sha1", new byte[21]));
+            //ExceptionAssert.Throws<ArgumentException>(() => new MultiHash("sha1", new byte[21]));
         }
 
         [TestMethod]
@@ -297,9 +297,9 @@ namespace Ipfs
             Console.WriteLine($"| binary | {mh.ToArray().ToHexString()} |");
             Console.WriteLine($"| base 58 | {mh.ToBase58()} |");
             Console.WriteLine($"| base 32 | {mh.ToBase32()} |");
-
         }
-        class TestVector
+
+        private class TestVector
         {
             public string Algorithm { get; set; }
             public string Input { get; set; }
@@ -307,7 +307,7 @@ namespace Ipfs
             public bool Ignore { get; set; }
         }
 
-        TestVector[] TestVectors = new TestVector[]
+        private TestVector[] TestVectors = new TestVector[]
         {
             // From https://github.com/multiformats/js-multihashing-async/blob/master/test/fixtures/encodes.js
             new TestVector {

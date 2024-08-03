@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
-    <AssemblyName>IpfsShipyard.Ipfs.Core</AssemblyName>
+	<TargetFramework>net7.0</TargetFramework>
+    <AssemblyName>Ipfs.Core</AssemblyName>
     <RootNamespace>Ipfs</RootNamespace>
     <langversion>10.0</langversion>
     <DebugType>portable</DebugType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
-    <!-- https://semver.org/spec/v2.0.0.html -->
-    <Version>0.0.1</Version>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <!-- developer build is always 0.42 -->
+    <AssemblyVersion>0.42</AssemblyVersion>
+    <Version>0.60</Version>
 
     <!-- Nuget specs -->
     <PackageId>IpfsShipyard.Ipfs.Core</PackageId>
@@ -23,10 +23,12 @@
       The InterPlanetary File System is the permanent web. IPFS enables the creation of completely distributed applications. It is a new hypermedia distribution protocol, addressed by content and identities. It aims to make the web faster, safer, and more open.
     </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>https://github.com/richardschneider/net-ipfs-core/releases</PackageReleaseNotes>
+    <Copyright>© 2022 liuham dynamics Limited</Copyright>
     <PackageTags>ipfs peer-to-peer distributed file-system</PackageTags>
     <IncludeSymbols>True</IncludeSymbols>
-    <PackageProjectUrl>https://github.com/ipfs-shipyard/net-ipfs-core</PackageProjectUrl>
-    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/richardschneider/net-ipfs-core</PackageProjectUrl>
+   
 
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -41,16 +43,19 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>.pdb;$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <ApplicationIcon>icoipfs.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.21.1" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
-    <PackageReference Include="SimpleBase" Version="1.3.1" />
-    <PackageReference Include="Grpc.Tools" Version="2.46.3" PrivateAssets="All" />
+    <PackageReference Include="Common.Logging" Version="3.4.1" />
+    <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.21.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+    <PackageReference Include="SimpleBase" Version="4.0.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.51.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.4.27" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,17 +13,16 @@ namespace Ipfs
     /// </summary>
     /// <remarks>
     ///   A <b>DataBlock</b> has an <see cref="Id">unique ID</see>
-    ///   and some data (<see cref="IDataBlock.DataBytes"/> 
+    ///   and some data (<see cref="IDataBlock.DataBytes"/>
     ///   or <see cref="IDataBlock.DataStream"/>).
     ///   <para>
-    ///   It is useful to talk about them as "blocks" in Bitswap 
+    ///   It is useful to talk about them as "blocks" in Bitswap
     ///   and other things that do not care about what is being stored.
     ///   </para>
     /// </remarks>
     /// <seealso cref="IMerkleNode{Link}"/>
     public interface IDataBlock
     {
-
         /// <summary>
         ///   Contents as a byte array.
         /// </summary>
@@ -57,7 +56,5 @@ namespace Ipfs
         /// <value>Number of bytes.</value>
         long Size { get; }
 
-
     }
-
 }

@@ -9,11 +9,11 @@ namespace Ipfs.Registry
     /// </summary>
     /// <remarks>
     ///   IPFS assigns a unique <see cref="Name"/> and <see cref="Code"/> to codecs.
-    ///   See <see href="https://github.com/multiformats/multicodec/blob/master/table.csv">table.csv</see> 
+    ///   See <see href="https://github.com/multiformats/multicodec/blob/master/table.csv">table.csv</see>
     ///   for the currently defined multi-codecs.
     /// </remarks>
     /// <seealso href="https://github.com/multiformats/multicodec"/>
-    public class Codec
+    public sealed class Codec
     {
         internal static Dictionary<string, Codec> Names = new Dictionary<string, Codec>();
         internal static Dictionary<int, Codec> Codes = new Dictionary<int, Codec>();
@@ -76,7 +76,7 @@ namespace Ipfs.Registry
         /// <summary>
         ///   Use <see cref="Register"/> to create a new instance of a <see cref="Codec"/>.
         /// </summary>
-        Codec()
+        private Codec()
         {
         }
 
@@ -128,6 +128,7 @@ namespace Ipfs.Registry
 
             return a;
         }
+
         /// <summary>
         ///   Remove an IPFS codec from the registry.
         /// </summary>
@@ -150,6 +151,5 @@ namespace Ipfs.Registry
         {
             get { return Names.Values; }
         }
-
     }
 }

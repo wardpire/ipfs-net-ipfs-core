@@ -1,10 +1,10 @@
-﻿using Google.Protobuf;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
+using Google.Protobuf;
+using Newtonsoft.Json;
 
 namespace Ipfs
 {
@@ -17,7 +17,7 @@ namespace Ipfs
     ///   </para>
     ///   <para>
     ///   Initially, IPFS used a <see cref="MultiHash"/> as the CID and this is still supported as <see cref="Version"/> 0.
-    ///   Version 1 adds a self describing structure to the multi-hash, see the <see href="https://github.com/ipld/cid">spec</see>. 
+    ///   Version 1 adds a self describing structure to the multi-hash, see the <see href="https://github.com/ipld/cid">spec</see>.
     ///   </para>
     ///   <note>
     ///   The <see cref="MultiHash.Algorithm">hashing algorithm</see> must be "sha2-256" for a version 0 CID.
@@ -32,12 +32,12 @@ namespace Ipfs
         /// </summary>
         public const string DefaultContentType = "dag-pb";
 
-        string encodedValue;
-        int version;
-        string encoding = MultiBase.DefaultAlgorithmName;
-        string contentType = DefaultContentType;
-        MultiHash hash;
- 
+        private string encodedValue;
+        private int version;
+        private string encoding = MultiBase.DefaultAlgorithmName;
+        private string contentType = DefaultContentType;
+        private MultiHash hash;
+
         /// <summary>
         ///   Throws if a property cannot be set.
         /// </summary>
@@ -48,7 +48,7 @@ namespace Ipfs
         ///   Once <see cref="Encode"/> is invoked, the CID's properties
         ///   cannot be set.
         /// </remarks>
-        void EnsureMutable()
+        private void EnsureMutable()
         {
             if (encodedValue != null)
             {
@@ -65,7 +65,7 @@ namespace Ipfs
         /// <remarks>
         ///   <para>
         ///   When the <see cref="Version"/> is 0 and the following properties
-        ///   are not matched, then the version is upgraded to version 1 when any 
+        ///   are not matched, then the version is upgraded to version 1 when any
         ///   of the properties is set.
         ///   <list type="bullet">
         ///   <item><description><see cref="ContentType"/> equals "dag-pb"</description></item>
@@ -213,20 +213,20 @@ namespace Ipfs
         /// <para>
         ///   The "G" format specifier is the same as calling <see cref="Encode"/>.
         /// </para>
-        /// <list type="table">  
-        /// <listheader>  
-        ///   <term>Specifier</term>  
-        ///   <description>return value</description>  
-        /// </listheader>  
-        ///  <item>  
-        ///    <term>G</term>  
-        ///    <description>QmXg9Pp2ytZ14xgmQjYEiHjVjMFXzCVVEcRTWJBmLgR39V</description>  
-        ///  </item>  
-        ///  <item>  
-        ///    <term>L</term>  
-        ///    <description>base58btc cidv0 dag-pb sha2-256 Qm...</description>  
-        ///  </item>  
-        /// </list> 
+        /// <list type="table">
+        /// <listheader>
+        ///   <term>Specifier</term>
+        ///   <description>return value</description>
+        /// </listheader>
+        ///  <item>
+        ///    <term>G</term>
+        ///    <description>QmXg9Pp2ytZ14xgmQjYEiHjVjMFXzCVVEcRTWJBmLgR39V</description>
+        ///  </item>
+        ///  <item>
+        ///    <term>L</term>
+        ///    <description>base58btc cidv0 dag-pb sha2-256 Qm...</description>
+        ///  </item>
+        /// </list>
         /// </remarks>
         public string ToString(string format)
         {
@@ -255,7 +255,6 @@ namespace Ipfs
                 default:
                     throw new FormatException($"Invalid CID format specifier '{format}'.");
             }
-        
         }
 
         /// <summary>
@@ -265,7 +264,7 @@ namespace Ipfs
         ///   The string representation of the <see cref="Cid"/>.
         /// </returns>
         /// <remarks>
-        ///   For <see cref="Version"/> 0, this is equalivalent to the 
+        ///   For <see cref="Version"/> 0, this is equalivalent to the
         ///   <see cref="MultiHash.ToBase58()">base58btc encoding</see>
         ///   of the <see cref="Hash"/>.
         /// </remarks>
@@ -505,7 +504,7 @@ namespace Ipfs
         ///   A new <see cref="Cid"/> based on the <paramref name="hash"/>.  A <see cref="Version"/> 0
         ///   CID is returned if the <paramref name="hash"/> is "sha2-356"; otherwise <see cref="Version"/> 1.
         /// </returns>
-        static public implicit operator Cid(MultiHash hash)
+        public static implicit operator Cid(MultiHash hash)
         {
             if (hash.Algorithm.Name == "sha2-256")
             {
@@ -524,6 +523,7 @@ namespace Ipfs
                 Hash = hash
             };
         }
+
         /// <inheritdoc />
         public override int GetHashCode()
         {
@@ -550,15 +550,15 @@ namespace Ipfs
         /// </summary>
         public static bool operator ==(Cid a, Cid b)
         {
-            if (object.ReferenceEquals(a, b))
+            if (ReferenceEquals(a, b))
             {
                 return true;
             }
-            if (object.ReferenceEquals(a, null))
+            if (ReferenceEquals(a, null))
             {
                 return false;
             }
-            if (object.ReferenceEquals(b, null))
+            if (ReferenceEquals(b, null))
             {
                 return false;
             }
@@ -570,15 +570,15 @@ namespace Ipfs
         /// </summary>
         public static bool operator !=(Cid a, Cid b)
         {
-            if (object.ReferenceEquals(a, b))
+            if (ReferenceEquals(a, b))
             {
                 return false;
             }
-            if (object.ReferenceEquals(a, null))
+            if (a is null)
             {
                 return true;
             }
-            if (object.ReferenceEquals(b, null))
+            if (b is null)
             {
                 return true;
             }
@@ -597,9 +597,9 @@ namespace Ipfs
         /// <remarks>
         ///    Equivalent to <code> Cid.Decode(s)</code>
         /// </remarks>
-        static public implicit operator Cid(string s)
+        public static implicit operator Cid(string s)
         {
-            return Cid.Decode(s);
+            return Decode(s);
         }
 
         /// <summary>
@@ -614,7 +614,7 @@ namespace Ipfs
         /// <remarks>
         ///    Equivalent to <code>Cid.Encode()</code>
         /// </remarks>
-        static public implicit operator string(Cid id)
+        public static implicit operator string(Cid id)
         {
             return id.Encode();
         }
@@ -649,10 +649,9 @@ namespace Ipfs
             /// <inheritdoc />
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
-                var s = reader.Value as string;
-                return s == null ? null : Cid.Decode(s);
+                string s = reader.Value as string;
+                return s == null ? null : Decode(s);
             }
         }
-
     }
 }

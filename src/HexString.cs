@@ -17,23 +17,22 @@ namespace Ipfs
     /// </remarks>
     public static class HexString
     {
-        static readonly string[] LowerCaseHexStrings = 
+        private static readonly string[] LowerCaseHexStrings =
             Enumerable.Range(byte.MinValue, byte.MaxValue + 1)
-            .Select(v => v.ToString("x2"))
-            .ToArray();
-        static readonly string[] UpperCaseHexStrings = 
-            Enumerable.Range(byte.MinValue, byte.MaxValue + 1)
-            .Select(v => v.ToString("X2"))
-            .ToArray();
-        static readonly Dictionary<string, byte> HexBytes =
-            Enumerable.Range(byte.MinValue, byte.MaxValue + 1)
-            .SelectMany(v => new [] { 
-                new { Value = v, String = v.ToString("x2") } , 
-                new { Value = v, String = v.ToString("X2") } 
-            } ) 
-            .Distinct()
-            .ToDictionary(v => v.String, v => (byte) v.Value);
+            .Select(v => v.ToString("x2")).ToArray();
 
+        private static readonly string[] UpperCaseHexStrings =
+            Enumerable.Range(byte.MinValue, byte.MaxValue + 1)
+            .Select(v => v.ToString("X2")).ToArray();
+
+        private static readonly Dictionary<string, byte> HexBytes =
+            Enumerable.Range(byte.MinValue, byte.MaxValue + 1)
+            .SelectMany(v => new[] {
+                new { Value = v, String = v.ToString("x2") } ,
+                new { Value = v, String = v.ToString("X2") }
+            })
+            .Distinct()
+            .ToDictionary(v => v.String, v => (byte)v.Value);
 
         /// <summary>
         ///   Converts an array of 8-bit unsigned integers to its equivalent hexadecimal string representation.
@@ -46,25 +45,18 @@ namespace Ipfs
         ///   The default is "G".
         /// </param>
         /// <returns>
-        ///   The string representation, in hexadecimal, of the contents of <paramref name="buffer"/>.  
+        ///   The string representation, in hexadecimal, of the contents of <paramref name="buffer"/>.
         /// </returns>
         public static string Encode(byte[] buffer, string format = "G")
         {
-            string[] hexStrings;
-            switch (format)
+            string[] hexStrings = format switch
             {
-                case "G":
-                case "x":
-                    hexStrings = LowerCaseHexStrings;
-                    break;
-                case "X":
-                    hexStrings = UpperCaseHexStrings;
-                    break;
-                default:
-                    throw new FormatException(string.Format("Invalid HexString format '{0}', only 'G', 'x' or 'X' are allowed.", format));
-            }
+                "G" or "x" => LowerCaseHexStrings,
+                "X" => UpperCaseHexStrings,
+                _ => throw new FormatException(string.Format("Invalid HexString format '{0}', only 'G', 'x' or 'X' are allowed.", format)),
+            };
 
-            StringBuilder s = new StringBuilder(buffer.Length * 2);
+            StringBuilder s = new(buffer.Length * 2);
             foreach (var v in buffer)
                 s.Append(hexStrings[v]);
             return s.ToString();
@@ -89,7 +81,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as hexadecimal digits, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as hexadecimal digits,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">
@@ -108,8 +100,7 @@ namespace Ipfs
             for (int i = 0, j = 0; i < n; i += 2, j++)
             {
                 var hex = s.Substring(i, 2);
-                byte value;
-                if (!HexBytes.TryGetValue(hex, out value))
+                if (!HexBytes.TryGetValue(hex, out byte value))
                     throw new InvalidDataException(string.Format("'{0}' is not a valid hexadecimal byte.", hex));
                 buffer[j] = value;
             }
@@ -118,7 +109,7 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Converts the specified <see cref="string"/>, which encodes binary data as a hexadecimal string, 
+        ///   Converts the specified <see cref="string"/>, which encodes binary data as a hexadecimal string,
         ///   to an equivalent 8-bit unsigned integer array.
         /// </summary>
         /// <param name="s">
