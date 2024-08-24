@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Security.Cryptography;
 using Google.Protobuf;
 using Ipfs.Registry;
 using Newtonsoft.Json;
+using Common.Logging;
 
 namespace Ipfs
 {

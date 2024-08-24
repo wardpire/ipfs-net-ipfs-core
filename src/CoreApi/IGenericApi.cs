@@ -115,47 +115,5 @@ namespace Ipfs.CoreApi
             int count = 10,
             CancellationToken cancel = default
             );
-
-        /// <summary>
-        ///   Send echo requests to a peer.
-        /// </summary>
-        /// <param name="peer">
-        ///   The peer ID to receive the echo requests.
-        /// </param>
-        /// <param name="count">
-        ///   The number of echo requests to send.  Defaults to 10.
-        /// </param>
-        /// <param name="cancel">
-        ///   Is used to stop the task.  When cancelled, the <see cref="TaskCanceledException"/> is raised.
-        /// </param>
-        /// <returns>
-        ///   An asynchronous stream of <see cref="PingResult"/>.
-        /// </returns>
-        IAsyncEnumerable<PingResult> Ping(
-            MultiHash peer,
-            int count = 10,
-            CancellationToken cancel = default
-            );
-
-        /// <summary>
-        ///   Send echo requests to a peer.
-        /// </summary>
-        /// <param name="address">
-        ///   The address of a peer to receive the echo requests.
-        /// </param>
-        /// <param name="count">
-        ///   The number of echo requests to send.  Defaults to 10.
-        /// </param>
-        /// <param name="cancel">
-        ///   Is used to stop the task.  When cancelled, the <see cref="TaskCanceledException"/> is raised.
-        /// </param>
-        /// <returns>
-        ///   An asynchronous stream of <see cref="PingResult"/>.
-        /// </returns>
-        IAsyncEnumerable<PingResult> Ping(
-            MultiAddress address,
-            int count = 10,
-            CancellationToken cancel = default
-            );
     }
 }
