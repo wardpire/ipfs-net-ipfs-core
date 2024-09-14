@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -104,23 +105,9 @@ namespace Ipfs.CoreApi
             CancellationToken cancel = default);
 
         /// <summary>
-        ///   Information on an IPFS block.
+        /// Replace original StatAsync which can return lengh of data but was used only as indicator of local avaibility
         /// </summary>
-        /// <param name="id">
-        ///   The <see cref="Cid"/> of the block.
-        /// </param>
-        /// <param name="cancel">
-        ///   Is used to stop the task.  When cancelled, the <see cref="TaskCanceledException"/> is raised.
-        /// </param>
-        /// <returns>
-        ///    A task that represents the asynchronous operation. The task's value
-        ///    contains the block's id and size or <b>null</b>.
-        /// </returns>
-        /// <remarks>
-        ///   Only the local repository is consulted for the block.  If <paramref name="id"/>
-        ///   does not exist, then <b>null</b> is retuned.
-        /// </remarks>
-        Task<IDataBlock> StatAsync(Cid id, CancellationToken cancel = default);
+        Task<bool> IsLocallyAvailable(Cid id, CancellationToken cancel = default);
 
         /// <summary>
         ///   Remove an IPFS block.
