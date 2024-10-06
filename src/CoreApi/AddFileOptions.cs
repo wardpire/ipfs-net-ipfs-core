@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ipfs.Registry;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -62,7 +63,7 @@ namespace Ipfs.CoreApi
         ///   Defaults to <see cref="MultiHash.DefaultAlgorithmName"/>.
         /// </value>
         /// <seealso cref="MultiHash"/>
-        public string Hash { get; set; } = MultiHash.DefaultAlgorithmName;
+        public AlgorithmNames Hash { get; set; } = MultiHash.DefaultAlgorithmName;
 
         /// <summary>
         ///   The encoding algorithm name to use.

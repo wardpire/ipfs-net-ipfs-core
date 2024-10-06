@@ -29,9 +29,9 @@ namespace Ipfs
         private string b58String;
 
         /// <summary>
-        ///   The default hashing algorithm is "sha2-256".
+        ///   The default hashing algorithm is AlgorithmNames.sha2_256.
         /// </summary>
-        public const string DefaultAlgorithmName = "sha2-256";
+        public const AlgorithmNames DefaultAlgorithmName = AlgorithmNames.sha2_256;
 
         /// <summary>
         ///   Gets the <see cref="HashAlgorithm"/> with the specified IPFS multi-hash name.
@@ -47,7 +47,7 @@ namespace Ipfs
         /// <exception cref="KeyNotFoundException">
         ///   When <paramref name="name"/> is not registered.
         /// </exception>
-        public static HashAlgorithm GetHashAlgorithm(string name = DefaultAlgorithmName)
+        public static HashAlgorithm GetHashAlgorithm(AlgorithmNames name = DefaultAlgorithmName)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Ipfs
         /// <exception cref="KeyNotFoundException">
         ///   When <paramref name="code"/> is not registered.
         /// </exception>
-        public static string GetHashAlgorithmName(int code)
+        public static AlgorithmNames GetHashAlgorithmName(int code)
         {
             try
             {
@@ -85,27 +85,17 @@ namespace Ipfs
         }
 
         /// <summary>
-        ///   Occurs when an unknown hashing algorithm number is parsed.
-        /// </summary>
-        public static EventHandler<UnknownHashingAlgorithmEventArgs> UnknownHashingAlgorithm;
-
-        /// <summary>
         ///   Creates a new instance of the <see cref="MultiHash"/> class with the
         ///   specified <see cref="HashingAlgorithm">Algorithm name</see> and <see cref="Digest"/> value.
         /// </summary>
         /// <param name="algorithmName">
-        ///   A valid IPFS hashing algorithm name, e.g. "sha2-256" or "sha2-512".
+        ///   A valid IPFS hashing algorithm name, e.g. AlgorithmNames.sha2_256 or "sha2-512".
         /// </param>
         /// <param name="digest">
         ///    The digest value as a byte array.
         /// </param>
-        public MultiHash(string algorithmName, byte[] digest)
+        public MultiHash(AlgorithmNames algorithmName, byte[] digest)
         {
-            if (algorithmName == null)
-            {
-                throw new ArgumentNullException(nameof(algorithmName));
-            }
-
             if (digest == null)
             {
                 throw new ArgumentNullException(nameof(digest));
@@ -341,19 +331,17 @@ namespace Ipfs
         {
             var code = stream.ReadInt32();
             var digestSize = stream.ReadLength();
-
-            HashingAlgorithm.Codes.TryGetValue(code, out HashingAlgorithm a);
-            Algorithm = a;
-            if (Algorithm == null)
+            
+            if (!HashingAlgorithm.Codes.TryGetValue(code, out var alg))
             {
-                Algorithm = HashingAlgorithm.Register("ipfs-" + code, code, digestSize);
-                RaiseUnknownHashingAlgorithm(Algorithm);
+                throw new InvalidDataException(string.Format("Unknown hashing algorithm number 0x{0:x2}.", code));
             }
-            else if (Algorithm.DigestSize != 0 && digestSize != Algorithm.DigestSize)
+            else if (alg.DigestSize != 0 && digestSize != alg.DigestSize)
             {
-                throw new InvalidDataException(string.Format("The digest size {0} is wrong for {1}; it should be {2}.", digestSize, Algorithm.Name, Algorithm.DigestSize));
+                throw new InvalidDataException(string.Format("The digest size {0} is wrong for {1}; it should be {2}.", digestSize, alg.Name, alg.DigestSize));
             }
 
+            Algorithm = alg;
             Digest = stream.ReadSomeBytes(digestSize);
         }
 
@@ -506,19 +494,6 @@ namespace Ipfs
             return true;
         }
 
-        private void RaiseUnknownHashingAlgorithm(HashingAlgorithm algorithm)
-        {
-            if (log.IsWarnEnabled)
-                log.WarnFormat("Unknown hashing algorithm number 0x{0:x2}.", algorithm.Code);
-
-            var handler = UnknownHashingAlgorithm;
-            if (handler != null)
-            {
-                var args = new UnknownHashingAlgorithmEventArgs { Algorithm = algorithm };
-                handler(this, args);
-            }
-        }
-
         /// <summary>
         ///   Generate the multihash for the specified byte array.
         /// </summary>
@@ -531,7 +506,7 @@ namespace Ipfs
         /// <returns>
         ///   A <see cref="MultiHash"/> for the <paramref name="data"/>.
         /// </returns>
-        public static MultiHash ComputeHash(byte[] data, string algorithmName = DefaultAlgorithmName)
+        public static MultiHash ComputeHash(byte[] data, AlgorithmNames algorithmName = DefaultAlgorithmName)
         {
             using (var alg = GetHashAlgorithm(algorithmName))
             {
@@ -551,7 +526,7 @@ namespace Ipfs
         /// <returns>
         ///   A <see cref="MultiHash"/> for the <paramref name="data"/>.
         /// </returns>
-        public static MultiHash ComputeHash(Stream data, string algorithmName = DefaultAlgorithmName)
+        public static MultiHash ComputeHash(Stream data, AlgorithmNames algorithmName = DefaultAlgorithmName)
         {
             using (var alg = GetHashAlgorithm(algorithmName))
             {

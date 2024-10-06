@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf;
+using Ipfs.Registry;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,7 @@ namespace Ipfs
     public class DagNode : IMerkleNode<IMerkleLink>
     {
         Cid id;
-        string hashAlgorithm = MultiHash.DefaultAlgorithmName;
+        AlgorithmNames hashAlgorithm = MultiHash.DefaultAlgorithmName;
         long? size;
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace Ipfs
         ///   The name of the hashing algorithm to use; defaults to
         ///   <see cref="MultiHash.DefaultAlgorithmName"/>.
         /// </param>
-        public DagNode(byte[] data, IEnumerable<IMerkleLink> links = null, string hashAlgorithm = MultiHash.DefaultAlgorithmName)
+        public DagNode(byte[] data, IEnumerable<IMerkleLink> links = null, AlgorithmNames hashAlgorithm = MultiHash.DefaultAlgorithmName)
         {
             this.DataBytes = data ?? (new byte[0]);
             this.Links = (links ?? (new DagLink[0]))

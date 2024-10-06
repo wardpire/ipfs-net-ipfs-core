@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Ipfs.Registry;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,7 +51,7 @@ namespace Ipfs.CoreApi
         Task<Cid> PutAsync(
             JObject data,
             string contentType = "dag-cbor",
-            string multiHash = MultiHash.DefaultAlgorithmName,
+            AlgorithmNames multiHash = MultiHash.DefaultAlgorithmName,
             string encoding = MultiBase.DefaultAlgorithmName,
             bool pin = true,
             CancellationToken cancel = default);
@@ -85,7 +86,7 @@ namespace Ipfs.CoreApi
         Task<Cid> PutAsync(
             Stream data,
             string contentType = "dag-cbor",
-            string multiHash = MultiHash.DefaultAlgorithmName,
+            AlgorithmNames multiHash = MultiHash.DefaultAlgorithmName,
             string encoding = MultiBase.DefaultAlgorithmName,
             bool pin = true,
             CancellationToken cancel = default);
@@ -120,7 +121,7 @@ namespace Ipfs.CoreApi
         Task<Cid> PutAsync(
             object data,
             string contentType = "dag-cbor",
-            string multiHash = MultiHash.DefaultAlgorithmName,
+            AlgorithmNames multiHash = MultiHash.DefaultAlgorithmName,
             string encoding = MultiBase.DefaultAlgorithmName,
             bool pin = true,
             CancellationToken cancel = default);

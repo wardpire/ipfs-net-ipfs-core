@@ -20,7 +20,7 @@ namespace Ipfs
     ///   Version 1 adds a self describing structure to the multi-hash, see the <see href="https://github.com/ipld/cid">spec</see>.
     ///   </para>
     ///   <note>
-    ///   The <see cref="MultiHash.Algorithm">hashing algorithm</see> must be "sha2-256" for a version 0 CID.
+    ///   The <see cref="MultiHash.Algorithm">hashing algorithm</see> must be AlgorithmNames.sha2_256 for a version 0 CID.
     ///   </note>
     /// </remarks>
     /// <seealso href="https://github.com/ipld/cid"/>
@@ -70,7 +70,7 @@ namespace Ipfs
         ///   <list type="bullet">
         ///   <item><description><see cref="ContentType"/> equals "dag-pb"</description></item>
         ///   <item><description><see cref="Encoding"/> equals "base58btc"</description></item>
-        ///   <item><description><see cref="Hash"/> algorithm name equals "sha2-256"</description></item>
+        ///   <item><description><see cref="Hash"/> algorithm name equals AlgorithmNames.sha2_256</description></item>
         ///   </list>
         ///   </para>
         ///   <para>
@@ -159,7 +159,7 @@ namespace Ipfs
         /// </value>
         /// <remarks>
         ///   Sets <see cref="Version"/> to 1, when setting a hashing algorithm that
-        ///   is not equal to "sha2-256".
+        ///   is not equal to AlgorithmNames.sha2_256.
         ///   <note>
         ///   If the <see cref="MultiHash.Algorithm"/> equals <c>identity</c>, then
         ///   the <see cref="MultiHash.Digest"/> is also the content.  This is commonly
@@ -176,7 +176,7 @@ namespace Ipfs
             {
                 EnsureMutable();
                 hash = value;
-                if (Version == 0 && Hash.Algorithm.Name != "sha2-256")
+                if (Version == 0 && Hash.Algorithm.Name != Registry.AlgorithmNames.sha2_256)
                 {
                     Version = 1;
                 }
@@ -506,7 +506,7 @@ namespace Ipfs
         /// </returns>
         public static implicit operator Cid(MultiHash hash)
         {
-            if (hash.Algorithm.Name == "sha2-256")
+            if (hash.Algorithm.Name == Registry.AlgorithmNames.sha2_256)
             {
                 return new Cid
                 {

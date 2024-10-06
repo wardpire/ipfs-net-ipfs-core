@@ -17,7 +17,7 @@ namespace Ipfs.CoreApi
     ///   </para>
     /// </remarks>
     /// <seealso href="https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/DHT.md">DHT API spec</seealso>
-    public interface IDhtApi : IPeerRouting, IContentRouting, IValueStore
+    public interface IDhtApi : IPeerRouting, IContentRouting, IDistibutedValueStore
     {
     }
 }

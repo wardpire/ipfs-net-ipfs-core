@@ -53,10 +53,9 @@ namespace Ipfs.CoreApi
         ///   A task that represents the asynchronous operation that returns
         ///   a sequence of IPFS <see cref="Peer"/>.
         /// </returns>
-        Task<IEnumerable<Peer>> FindProvidersAsync(
+        IAsyncEnumerable<Peer> FindProvidersAsync(
             Cid id,
             int limit = 20,
-            Action<Peer> providerFound = null,
             CancellationToken cancel = default);
     }
 }

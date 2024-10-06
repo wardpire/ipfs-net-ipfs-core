@@ -1,4 +1,5 @@
 ﻿
+using Ipfs.Registry;
 using System;
 using System.IO;
 using System.Threading;
@@ -64,7 +65,7 @@ namespace Ipfs.CoreApi
         Task<Cid> PutAsync(
             byte[] data,
             string contentType = Cid.DefaultContentType,
-            string multiHash = MultiHash.DefaultAlgorithmName,
+            AlgorithmNames multiHash = MultiHash.DefaultAlgorithmName,
             string encoding = MultiBase.DefaultAlgorithmName,
             bool pin = false,
             CancellationToken cancel = default);
@@ -99,7 +100,7 @@ namespace Ipfs.CoreApi
         Task<Cid> PutAsync(
             Stream data,
             string contentType = Cid.DefaultContentType,
-            string multiHash = MultiHash.DefaultAlgorithmName,
+            AlgorithmNames multiHash = MultiHash.DefaultAlgorithmName,
             string encoding = MultiBase.DefaultAlgorithmName,
             bool pin = false,
             CancellationToken cancel = default);

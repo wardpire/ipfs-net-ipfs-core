@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ipfs.Cryptography;
 using System.Security.Cryptography;
 using BC = Org.BouncyCastle.Crypto.Digests;
+using SimhashLib;
 
 namespace Ipfs.Registry
 {
@@ -37,7 +38,7 @@ namespace Ipfs.Registry
     /// </remarks>
     public sealed class HashingAlgorithm
     {
-        internal static Dictionary<string, HashingAlgorithm> Names = new();
+        internal static Dictionary<AlgorithmNames, HashingAlgorithm> Names = new();
         internal static Dictionary<int, HashingAlgorithm> Codes = new();
 
         /// <summary>
@@ -46,32 +47,32 @@ namespace Ipfs.Registry
         /// <seealso href="https://github.com/multiformats/multicodec/blob/master/table.csv"/>
         static HashingAlgorithm()
         {
-            Register("sha1", 0x11, 20, () => SHA1.Create());
-            Register("sha2-256", 0x12, 32, () => SHA256.Create());
-            Register("sha2-512", 0x13, 64, () => SHA512.Create());
-            Register("dbl-sha2-256", 0x56, 32, () => new DoubleSha256());
-            Register("keccak-224", 0x1A, 224 / 8, () => new KeccakManaged(224));
-            Register("keccak-256", 0x1B, 256 / 8, () => new KeccakManaged(256));
-            Register("keccak-384", 0x1C, 384 / 8, () => new KeccakManaged(384));
-            Register("keccak-512", 0x1D, 512 / 8, () => new KeccakManaged(512));
-            Register("sha3-224", 0x17, 224 / 8, () => new BouncyDigest(new BC.Sha3Digest(224)));
-            Register("sha3-256", 0x16, 256 / 8, () => new BouncyDigest(new BC.Sha3Digest(256)));
-            Register("sha3-384", 0x15, 384 / 8, () => new BouncyDigest(new BC.Sha3Digest(384)));
-            Register("sha3-512", 0x14, 512 / 8, () => new BouncyDigest(new BC.Sha3Digest(512)));
-            Register("shake-128", 0x18, 128 / 8, () => new BouncyDigest(new BC.ShakeDigest(128)));
-            Register("shake-256", 0x19, 256 / 8, () => new BouncyDigest(new BC.ShakeDigest(256)));
-            Register("blake2b-160", 0xb214, 160 / 8, () => new BouncyDigest(new BC.Blake2bDigest(160)));
-            Register("blake2b-256", 0xb220, 256 / 8, () => new BouncyDigest(new BC.Blake2bDigest(256)));
-            Register("blake2b-384", 0xb230, 384 / 8, () => new BouncyDigest(new BC.Blake2bDigest(384)));
-            Register("blake2b-512", 0xb240, 512 / 8, () => new BouncyDigest(new BC.Blake2bDigest(512)));
-            Register("blake2s-128", 0xb250, 128 / 8, () => new BouncyDigest(new BC.Blake2sDigest(128)));
-            Register("blake2s-160", 0xb254, 160 / 8, () => new BouncyDigest(new BC.Blake2sDigest(160)));
-            Register("blake2s-224", 0xb25c, 224 / 8, () => new BouncyDigest(new BC.Blake2sDigest(224)));
-            Register("blake2s-256", 0xb260, 256 / 8, () => new BouncyDigest(new BC.Blake2sDigest(256)));
-            Register("md4", 0xd4, 128 / 8, () => new BouncyDigest(new BC.MD4Digest()));
-            Register("md5", 0xd5, 128 / 8, () => MD5.Create());
-            Register("identity", 0, 0, () => new IdentityHash());
-            RegisterAlias("id", "identity");
+            Register(AlgorithmNames.sha1, 0x11, 20, () => SHA1.Create());
+            Register(AlgorithmNames.sha2_256, 0x12, 32, () => SHA256.Create());
+            Register(AlgorithmNames.sha2_512, 0x13, 64, () => SHA512.Create());
+            Register(AlgorithmNames.dbl_sha2_256, 0x56, 32, () => new DoubleSha256());
+            Register(AlgorithmNames.keccak_224, 0x1A, 224 / 8, () => new KeccakManaged(224));
+            Register(AlgorithmNames.keccak_256, 0x1B, 256 / 8, () => new KeccakManaged(256));
+            Register(AlgorithmNames.keccak_384, 0x1C, 384 / 8, () => new KeccakManaged(384));
+            Register(AlgorithmNames.keccak_512, 0x1D, 512 / 8, () => new KeccakManaged(512));
+            Register(AlgorithmNames.sha3_224, 0x17, 224 / 8, () => new BouncyDigest(new BC.Sha3Digest(224)));
+            Register(AlgorithmNames.sha3_256, 0x16, 256 / 8, () => new BouncyDigest(new BC.Sha3Digest(256)));
+            Register(AlgorithmNames.sha3_384, 0x15, 384 / 8, () => new BouncyDigest(new BC.Sha3Digest(384)));
+            Register(AlgorithmNames.sha3_512, 0x14, 512 / 8, () => new BouncyDigest(new BC.Sha3Digest(512)));
+            Register(AlgorithmNames.shake_128, 0x18, 128 / 8, () => new BouncyDigest(new BC.ShakeDigest(128)));
+            Register(AlgorithmNames.shake_256, 0x19, 256 / 8, () => new BouncyDigest(new BC.ShakeDigest(256)));
+            Register(AlgorithmNames.blake2b_160, 0xb214, 160 / 8, () => new BouncyDigest(new BC.Blake2bDigest(160)));
+            Register(AlgorithmNames.blake2b_256, 0xb220, 256 / 8, () => new BouncyDigest(new BC.Blake2bDigest(256)));
+            Register(AlgorithmNames.blake2b_384, 0xb230, 384 / 8, () => new BouncyDigest(new BC.Blake2bDigest(384)));
+            Register(AlgorithmNames.blake2b_512, 0xb240, 512 / 8, () => new BouncyDigest(new BC.Blake2bDigest(512)));
+            Register(AlgorithmNames.blake2s_128, 0xb250, 128 / 8, () => new BouncyDigest(new BC.Blake2sDigest(128)));
+            Register(AlgorithmNames.blake2s_160, 0xb254, 160 / 8, () => new BouncyDigest(new BC.Blake2sDigest(160)));
+            Register(AlgorithmNames.blake2s_224, 0xb25c, 224 / 8, () => new BouncyDigest(new BC.Blake2sDigest(224)));
+            Register(AlgorithmNames.blake2s_256, 0xb260, 256 / 8, () => new BouncyDigest(new BC.Blake2sDigest(256)));
+            Register(AlgorithmNames.md4, 0xd4, 128 / 8, () => new BouncyDigest(new BC.MD4Digest()));
+            Register(AlgorithmNames.md5, 0xd5, 128 / 8, () => MD5.Create());
+            Register(AlgorithmNames.identity, 0, 0, () => new IdentityHash());
+            Register(AlgorithmNames.simhash, 0x20, 256, () => new Cryptography.Simhash(256));
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace Ipfs.Registry
         /// <value>
         ///   A unique name.
         /// </value>
-        public string Name { get; private set; }
+        public AlgorithmNames Name { get; private set; }
 
         /// <summary>
         ///   The IPFS number assigned to the hashing algorithm.
@@ -117,7 +118,7 @@ namespace Ipfs.Registry
         /// </summary>
         public override string ToString()
         {
-            return Name;
+            return Enum.GetName(Name)??string.Empty;
         }
 
         /// <summary>
@@ -139,10 +140,8 @@ namespace Ipfs.Registry
         /// <returns>
         ///   A new <see cref="HashingAlgorithm"/>.
         /// </returns>
-        public static HashingAlgorithm Register(string name, int code, int digestSize, Func<HashAlgorithm> hasher = null)
+        public static HashingAlgorithm Register(AlgorithmNames name, int code, int digestSize, Func<HashAlgorithm> hasher = null)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name));
             if (Names.ContainsKey(name))
                 throw new ArgumentException(string.Format("The IPFS hashing algorithm '{0}' is already defined.", name));
             if (Codes.ContainsKey(code))
@@ -159,41 +158,6 @@ namespace Ipfs.Registry
             };
             Names[name] = a;
             Codes[code] = a;
-
-            return a;
-        }
-
-        /// <summary>
-        ///   Register an alias for an IPFS hashing algorithm.
-        /// </summary>
-        /// <param name="alias">
-        ///   The alias name.
-        /// </param>
-        /// <param name="name">
-        ///   The name of the existing algorithm.
-        /// </param>
-        /// <returns>
-        ///   A new <see cref="HashingAlgorithm"/>.
-        /// </returns>
-        public static HashingAlgorithm RegisterAlias(string alias, string name)
-        {
-            if (string.IsNullOrWhiteSpace(alias))
-                throw new ArgumentNullException(nameof(alias));
-            if (Names.ContainsKey(alias))
-                throw new ArgumentException(string.Format("The IPFS hashing algorithm '{0}' is already defined and cannot be used as an alias.", alias));
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name));
-            if (!Names.TryGetValue(name, out HashingAlgorithm existing))
-                throw new ArgumentException(string.Format("The IPFS hashing algorithm '{0}' is not defined.", name));
-
-            var a = new HashingAlgorithm
-            {
-                Name = name,
-                Code = existing.Code,
-                DigestSize = existing.DigestSize,
-                Hasher = existing.Hasher
-            };
-            Names[alias] = a;
 
             return a;
         }
@@ -234,7 +198,7 @@ namespace Ipfs.Registry
         /// <exception cref="KeyNotFoundException">
         ///   When <paramref name="name"/> is not registered.
         /// </exception>
-        public static HashAlgorithm GetAlgorithm(string name)
+        public static HashAlgorithm GetAlgorithm(AlgorithmNames name)
         {
             return GetAlgorithmMetadata(name).Hasher();
         }
@@ -252,7 +216,7 @@ namespace Ipfs.Registry
         /// <exception cref="KeyNotFoundException">
         ///   When <paramref name="name"/> is not registered.
         /// </exception>
-        public static HashingAlgorithm GetAlgorithmMetadata(string name)
+        public static HashingAlgorithm GetAlgorithmMetadata(AlgorithmNames name)
         {
             try
             {

@@ -1,0 +1,32 @@
+﻿namespace Ipfs.Registry
+{
+    public enum AlgorithmNames
+    {
+        sha1,
+        sha2_256,
+        sha2_512,
+        dbl_sha2_256,
+        keccak_224,
+        keccak_256,
+        keccak_384,
+        keccak_512,
+        sha3_224,
+        sha3_256,
+        sha3_384,
+        sha3_512,
+        shake_128,
+        shake_256,
+        blake2b_160,
+        blake2b_256,
+        blake2b_384,
+        blake2b_512,
+        blake2s_128,
+        blake2s_160,
+        blake2s_224,
+        blake2s_256,
+        md4,
+        md5,
+        identity,
+        simhash
+    }
+}
