@@ -7,6 +7,7 @@ using Google.Protobuf;
 using Ipfs.Registry;
 using Newtonsoft.Json;
 using Common.Logging;
+using System.Text;
 
 namespace Ipfs
 {
@@ -121,6 +122,11 @@ namespace Ipfs
                 // Identity digest
                 Digest = digest.Length > 0 ? digest : Array.Empty<byte>();
             }
+        }
+
+        public MultiHash(AlgorithmNames algorithmName, string UTF8EncodedDigest)
+            : this(algorithmName, Encoding.UTF8.GetBytes(UTF8EncodedDigest))
+        {
         }
 
         /// <summary>
@@ -331,7 +337,7 @@ namespace Ipfs
         {
             var code = stream.ReadInt32();
             var digestSize = stream.ReadLength();
-            
+
             if (!HashingAlgorithm.Codes.TryGetValue(code, out var alg))
             {
                 throw new InvalidDataException(string.Format("Unknown hashing algorithm number 0x{0:x2}.", code));

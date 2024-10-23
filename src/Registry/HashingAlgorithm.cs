@@ -72,7 +72,7 @@ namespace Ipfs.Registry
             Register(AlgorithmNames.md4, 0xd4, 128 / 8, () => new BouncyDigest(new BC.MD4Digest()));
             Register(AlgorithmNames.md5, 0xd5, 128 / 8, () => MD5.Create());
             Register(AlgorithmNames.identity, 0, 0, () => new IdentityHash());
-            Register(AlgorithmNames.simhash, 0x20, 256, () => new Cryptography.Simhash(256));
+            Register(AlgorithmNames.simhash, 0x20, 0, () => new Cryptography.Simhash(256));
         }
 
         /// <summary>

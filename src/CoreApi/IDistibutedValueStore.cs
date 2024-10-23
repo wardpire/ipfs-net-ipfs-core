@@ -8,6 +8,8 @@ namespace Ipfs.CoreApi
     {
         Task<IEnumerable<byte[]>> FindSimilarValuesAsync(string @namespace, MultiHash key, CancellationToken cancellationToken = default);
         Task<byte[]?> TryGetValueAsync(string @namespace, MultiHash key, CancellationToken cancellationToken = default);
+        Task<string?> TryGetValueStringAsync(string @namespace, MultiHash key, CancellationToken cancellationToken = default);
         Task PutValueAsync(string @namespace, MultiHash key, byte[] value, CancellationToken cancellationToken = default);
+        Task PutValueAsync(string @namespace, MultiHash key, string UTF8Value, CancellationToken cancellationToken = default);
     }
 }
